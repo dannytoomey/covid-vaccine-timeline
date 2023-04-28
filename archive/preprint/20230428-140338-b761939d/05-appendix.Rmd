@@ -1,0 +1,294 @@
+BIBLIOGRAPHY
+
+
+# (APPENDIX) Appendix {-}
+
+# Sensitivity
+
+## Baseline fit to reported deaths instead of excess deaths
+
+```{r reported-deaths-averted-table, echo=FALSE}
+
+differences_table <- deaths_averted_table_single(load_deaths_averted_table( excess = FALSE ))
+
+differences_table %>%
+  kbl(booktabs=TRUE, centering = TRUE, caption = "Averted deaths calculated on the basis of a model fit to reported deaths") %>%
+  pack_rows("United Kingdom to April 2021", 1, 3) %>%
+  pack_rows("United Kingdom to July 2021", 4, 6) %>%
+  pack_rows("United Kingdom to Jan 2022", 7, 9) %>%
+  pack_rows("United States to April 2021", 10, 12) %>%
+  pack_rows("United States to July 2021", 13, 15) %>%
+  pack_rows("United States to Jan 2022", 16, 18) %>%
+  kable_styling(font_size = 7)
+
+```
+
+```{r reported-deaths-averted-plot, fig.align="center", fig.cap=c("DJ6 Daily deaths per scenario"), echo=FALSE}
+deaths_averted = readRDS("data/reported_deaths_averted_detail.Rds")
+
+zoomed_deaths_averted = deaths_averted %>%
+  filter(date > as.Date("2020-09-01") & date <= primary_last_date) %>%
+  filter(counterfactual %in% cfacts_to_display) %>%
+  mutate(counterfactual_label = mapvalues(
+    counterfactual,
+    from = cfacts_to_display,
+    to = labels_to_display
+  )) %>%
+  mutate(counterfactual_label = factor(counterfactual_label,
+                                       labels_to_display))
+
+single_timeseries_plot = ggplot(zoomed_deaths_averted, aes(x = date)) +
+  geom_line(aes(y = baseline_deaths_avg, colour = "baseline")) +
+  geom_line(aes(y = deaths_avg, colour = "counterfactual")) +
+  geom_ribbon(
+    aes(ymin = deaths_025, ymax = deaths_975),
+    alpha = 0.3,
+    fill = colour_counterfactual
+  ) +
+  facet_grid(counterfactual_label ~ country,
+             labeller = labeller(.rows=label_wrap_gen(width = 15))) +
+  scale_colour_manual(
+    labels = c('baseline', 'counterfactual'),
+    values = c(colour_baseline, colour_counterfactual)
+  ) +
+  labs(x = "Date", y = "Daily Deaths", color = "Colour")
+  
+
+plot(single_timeseries_plot)
+
+
+```
+
+## Counterfactual scenario: what if US had doubled the rate of booster uptake?
+
+```{r deaths-averted-table-doubleboost, echo=FALSE, results='asis'}
+differences_table <- deaths_averted_table_single(
+    load_deaths_averted_table(
+      table_path = "data/doubleboost_deaths_averted_detail.Rds")
+  )
+
+differences_table %>% kbl(booktabs = TRUE, centering = TRUE, caption = "How would US outcomes change if boosters were adopted at twice the actual rate?") %>%
+  pack_rows("United Kingdom to April 2021", 1, 3) %>%
+  pack_rows("United Kingdom to July 2021", 4, 6) %>%
+  pack_rows("United Kingdom to Jan 2022", 7, 9) %>%
+  pack_rows("United States to April 2021", 10, 12) %>%
+  pack_rows("United States to July 2021", 13, 15) %>%
+  pack_rows("United States to Jan 2022", 16, 18) %>%
+  kable_styling(font_size = 7)
+
+
+```
+
+## Sensitivity to parametric estimates
+
+```{r deaths-averted-table-vei, echo=FALSE, results='asis'}
+differences_tables <- deaths_averted_table_multiple(join_counterfactual_tables(parameter_variants, percentiles, last_dates_to_display))
+
+differences_tables$veis %>% kbl(booktabs = TRUE, centering = TRUE, caption = "Sensitivity to average vaccine efficacy against infection (VEI)") %>%
+  pack_rows("UK to April 2021", 1, 6) %>%
+  pack_rows("UK to July 2021", 7, 12) %>%
+  pack_rows("UK to Jan 2022", 13, 18) %>%
+  pack_rows("US to April 2021", 19, 24) %>%
+  pack_rows("US to July 2021", 25, 30) %>%
+  pack_rows("US to Jan 2022", 31, 36) %>%
+  kable_styling(font_size = 7)
+
+
+```
+
+```{r deaths-averted-table-durV, echo=FALSE, results='asis'}
+differences_tables <- deaths_averted_table_multiple(join_counterfactual_tables(parameter_variants, percentiles, last_dates_to_display))
+
+differences_tables$dur_Vs %>% kbl(booktabs = TRUE, centering = TRUE, caption = "Sensitivity to duration of vaccine acquired immunity (DVI)") %>%
+  pack_rows("UK to April 2021", 1, 6) %>%
+  pack_rows("UK to July 2021", 7, 12) %>%
+  pack_rows("UK to Jan 2022", 13, 18) %>%
+  pack_rows("US to April 2021", 19, 24) %>%
+  pack_rows("US to July 2021", 25, 30) %>%
+  pack_rows("US to Jan 2022", 31, 36) %>%
+  kable_styling(font_size = 7)
+
+```
+
+```{r deaths-averted-table-durR, echo=FALSE, results='asis'}
+differences_tables <- deaths_averted_table_multiple(join_counterfactual_tables(parameter_variants, percentiles, last_dates_to_display))
+
+differences_tables$dur_Rs %>% kbl(booktabs = TRUE, centering = TRUE, caption = "Sensitivity to duration of naturally acquired immunity (DNI)") %>%
+  pack_rows("UK to April 2021", 1, 6) %>%
+  pack_rows("UK to July 2021", 7, 12) %>%
+  pack_rows("UK to Jan 2022", 13, 18) %>%
+  pack_rows("US to April 2021", 19, 24) %>%
+  pack_rows("US to July 2021", 25, 30) %>%
+  pack_rows("US to Jan 2022", 31, 36) %>%
+  kable_styling(font_size = 7)
+
+```
+
+```{r deaths-averted-plot-vei, fig.align="center", fig.cap=c("DJ6 Daily deaths per scenario, sensitivity to vaccine duration"), echo=FALSE}
+
+deaths_averted_plots <- deaths_averted_plot('veis', percentiles, last_dates_to_display)
+
+```
+
+```{r deaths-averted-plot-durV, fig.align="center", fig.cap=c("DJ6 Daily deaths per scenario, sensitivity to vaccine efficacy"), echo=FALSE}
+
+deaths_averted_plots <- deaths_averted_plot('dur_Vs', percentiles, last_dates_to_display)
+
+```
+
+```{r deaths-averted-plot-durR, fig.align="center", fig.cap=c("DJ6 Daily deaths per scenario, sensitivity to natural immunity duration"), echo=FALSE}
+
+deaths_averted_plots <- deaths_averted_plot('dur_Rs', percentiles, last_dates_to_display)
+```
+
+```{r vaccinated-plot-vei, fig.align="center", fig.cap=c("Vaccinated, sensitivity to vaccine duration"), echo=FALSE}
+
+deaths_averted_plots <- vaccinated_plot('dur_Vs', percentiles, last_dates_to_display[2])
+
+```
+
+# Vaccine production model
+
+Figure \@ref(fig:prod-assumptions) shows the assumptions we made about the achievable production when vaccines were approved to be used 30, 60 and 90 days earlier.
+
+```{r prod-assumptions, fig.align="center", fig.cap=c("DJ9 Vaccine production assumptions"), echo=FALSE}
+detail_prod = readRDS("data/detail_production.Rds")
+pfizer_prod = readRDS("data/pfizer_estimated_production.Rds")
+moderna_prod = readRDS("data/moderna_estimated_production.Rds")
+
+plot1 = ggplot() +
+  geom_line(data = detail_prod,
+            aes(x = date, y = cumulative_available_vaccines)) +
+  xlab("Date") +
+  ylab("Cumulative vaccines available") +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))
+
+plot2 = ggplot() +
+  geom_line(data = detail_prod,
+            aes(x = date, y = daily_vaccines)) +
+  xlab("Date") +
+  ylab("Daily vaccines produced") +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))
+
+plot3 = ggplot() +
+  geom_line(data = moderna_prod,
+            aes(x = date, y = daily_production)) +
+  xlab("Date") +
+  ylab("Daily vaccines produced\nModerna") +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))
+
+plot4 = ggplot() +
+  geom_line(data = pfizer_prod,
+            aes(x = date, y = daily_production)) +
+  xlab("Date") +
+  ylab("Daily vaccines produced\nPfizer") +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))
+
+combined_plot =
+  ggarrange(plot3,
+            plot4,
+            plot2,
+            plot1,
+            nrow = 2,
+            ncol = 2)
+plot(combined_plot)
+```
+
+
+Figures \@ref(fig:prod-cap-uk) and \@rel{fig:prod-cap-usa} show our assumptions about the maximum number of vaccines that could be produced each day if vaccines were approved 30, 60 and 90 days earlier.
+
+```{r prod-cap-uk, fig.align="center", fig.cap=c("DJ10 Limits from production UK"), echo=FALSE}
+production = readRDS("data/counterfactual_production.Rds")
+
+country_name = "United Kingdom"
+
+country_cfact = counterfactuals %>%
+  filter(country == country_name) %>%
+  mutate(shifted_by = factor(
+    shifted_by,
+    levels = c("baseline", "30", "60", "90"),
+    labels = c(
+      "Baseline",
+      "Vaccines 30 days sooner",
+      "Vaccines 60 days sooner",
+      "Vaccines 90 days sooner"
+    )
+  ))
+  country_prod = production %>% filter(country == country_name)
+  
+
+dj10 = ggplot() +
+  geom_line(data = country_prod,
+            aes(
+              x = as.Date(date),
+              y = cumulative_available_vaccines,
+              color = "Production"
+            )) +
+  geom_line(data = country_cfact,
+            aes(
+              x = as.Date(date),
+              y = total_vacc,
+              color = "Vaccination"
+            )) +
+  labs(x = "Date",
+       y = "Cumulative production / vaccinations",
+       color = "Colour") +
+  ggtitle(country_name) +
+  scale_colour_manual(
+    labels = c('Production', 'Vaccination'),
+    values = c(colour_baseline, colour_counterfactual)
+  ) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
+  facet_wrap(~ shifted_by)
+
+plot(dj10)
+```
+
+
+```{r prod-cap-usa, fig.align="center", fig.cap=c("DJ10 Limits from production UK"), echo=FALSE}
+production = readRDS("data/counterfactual_production.Rds")
+
+country_name = "United States"
+
+country_cfact = counterfactuals %>%
+  filter(country == country_name) %>%
+  mutate(shifted_by = factor(
+    shifted_by,
+    levels = c("baseline", "30", "60", "90"),
+    labels = c(
+      "Baseline",
+      "Vaccines 30 days sooner",
+      "Vaccines 60 days sooner",
+      "Vaccines 90 days sooner"
+    )
+  ))
+  country_prod = production %>% filter(country == country_name)
+  
+
+dj10 = ggplot() +
+  geom_line(data = country_prod,
+            aes(
+              x = as.Date(date),
+              y = cumulative_available_vaccines,
+              color = "Production"
+            )) +
+  geom_line(data = country_cfact,
+            aes(
+              x = as.Date(date),
+              y = total_vacc,
+              color = "Vaccination"
+            )) +
+  labs(x = "Date",
+       y = "Cumulative production / vaccinations",
+       color = "Colour") +
+  ggtitle(country_name) +
+  scale_colour_manual(
+    labels = c('Production', 'Vaccination'),
+    values = c(colour_baseline, colour_counterfactual)
+  ) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
+  facet_wrap(~ shifted_by)
+
+plot(dj10)
+
+```
