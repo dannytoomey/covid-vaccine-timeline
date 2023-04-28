@@ -63,23 +63,12 @@ setwd(root_path)
 
 ### Run the simulations
 
-The following simulates the baseline pandemic in the United States and the United Kingdom, as well as a
-collection of predefined counterfactuals. If you are looking to alter the counterfactuals
-simulated, you can edit this file.
+The following simulates a collection of predefined counterfactuals. 
+If you are looking to alter the counterfactuals simulated, you can edit this file.
 
 ```{r, echo=TRUE, eval=FALSE}
-get_baseline_production_id <- orderly::orderly_run("get_baseline_production",
-                                                   echo = FALSE 
-)
-orderly::orderly_commit(get_baseline_production_id)
-```
-
-```{r, echo=TRUE, eval=FALSE}
-generate_production_counterfactual_id <- orderly::orderly_run("generate_production_counterfactual",
-                                                          parameters = list(
-                                                              shift_by = 60,
-                                                              interpolation_source_end = '2022-01-01'
-                                                          ), echo = FALSE 
+generate_production_counterfactual_id <- orderly::orderly_run("generate_production_counterfactual", 
+                                                              echo = FALSE 
 )
 orderly::orderly_commit(generate_production_counterfactual_id)
 ```
@@ -87,7 +76,7 @@ orderly::orderly_commit(generate_production_counterfactual_id)
 ```{r, echo=TRUE, eval=FALSE}
 generate_vaccine_counterfactual_id <- orderly::orderly_run("generate_vaccine_counterfactual",
                                                           parameters = list(
-                                                              shift_by = 60
+                                                              shift_days = 60
                                                           ), echo = FALSE
 )
 orderly::orderly_commit(generate_vaccine_counterfactual_id)
@@ -107,17 +96,6 @@ generate_counterfactuals_id <- orderly::orderly_run("generate_counterfactuals",
 orderly::orderly_commit(generate_counterfactuals_id)
 ```
 
-To run the older model, use the following command instead:
-
-```{r, echo=TRUE, eval=FALSE}
-generate_counterfactuals_old_id <- orderly::orderly_run("generate_counterfactuals_oldfits",
-                                                   parameters = list(
-                                                        excess = TRUE
-                                                   ), echo = FALSE
-)
-orderly::orderly_commit(generate_counterfactuals_old_id)
-```
-
 ### Create the plots
 
 Plots for the counterfactual simulations can be generated with the following task. Here, the parameters `excess` and `lowtransmission` determine which counterfactual simulation is plotted. The task will use the most recent counterfactual simulation for which the values of both parameters matches; if there is no simulation that matches both parameters, it will fail.
@@ -130,15 +108,4 @@ d_a_plot_id <- orderly::orderly_run("deaths_averted_plot_timeline",
   )
 )
 orderly::orderly_commit(d_a_plot_id)
-```
-
-To create plots for the older simulation, use
-
-```{r, echo=TRUE, eval=FALSE}
-d_a_plot_old_id <- orderly::orderly_run("deaths_averted_plot_timeline_oldfits",
-  parameters = list(
-      excess = TRUE,
-  )
-)
-orderly::orderly_commit(d_a_plot_old_id)
 ```

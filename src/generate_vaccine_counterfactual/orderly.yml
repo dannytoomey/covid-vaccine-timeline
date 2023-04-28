@@ -88,6 +88,11 @@ artefacts:
 # a parameter of b with no default.
 #
 
+# DT 4/27/23 - adding in the shift-by parameter as it is used in the vignette and 
+parameters:
+  shift_days:
+    default: 30
+
 # Similar to "data" but sets of temporary views before the data are
 # extracted.  Can be embedded SQL strings or filenames to actual
 # queries.  Use this to simplify the extraction.

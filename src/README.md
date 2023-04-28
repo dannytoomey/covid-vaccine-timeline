@@ -22,4 +22,4 @@ Each counterfactual scenario has its own file so that adding counterfactual scen
 See `owid-raw.csv` for a file of the required format with the real vaccination campaign data derived from the set provided by [Our World in Data](https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations).
 
 
-To see a vignette illustrating how to generate and plot counterfactuals, run `rmarkdown::render('./sim_plot_counterfactuals.Rmd')`. 
+To see a vignette illustrating how to generate and plot counterfactuals, run `rmarkdown::render('./src/sim_plot_counterfactuals.Rmd')`. 
