@@ -5,6 +5,7 @@
 .Ruserdata
 draft
 *.sqlite
+*.tsv
 .Renviron
 .lintr
 orderly_envir.yml
@@ -17,11 +18,8 @@ _book
 _bookdown_files
 src/input_sequencing/metadata.tsv
 src/*.html
-
 archive/.orderly_archive_version
-
 figure/report_files/
-
 archive/deaths_averted_plot_timeline/*
 !archive/deaths_averted_plot_timeline/20230506-175801-2bed9408/
 archive/generate_counterfactuals/*
@@ -43,6 +41,5 @@ archive/lmic_reports_rt_optimise/*
 archive/parameters_vaccines/*
 !archive/parameters_vaccines/20230505-171154-38bf3c7e/
 archive/preprint/*
-
 /report.*
 !/report.md
