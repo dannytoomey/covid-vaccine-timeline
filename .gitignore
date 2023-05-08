@@ -5,6 +5,8 @@
 .Ruserdata
 draft
 *.sqlite
+*.tsv
+*.gz
 .Renviron
 .lintr
 orderly_envir.yml
