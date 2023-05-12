@@ -58,11 +58,11 @@ Caused by error:
 ```
 
 Solution:
-Increase the amount of memory that can be allocated to the program. The amount of memory you want to increase the allocation to is up to you, though the authors recommend setting a large limit such as 25gb to avoid this error. This will not impact how R operates outside of the current environment. The following commands are given with the assumption the user wants to increase the memory to 25gb and can be adjusted to a lower size if desired. 
-- On Windows, run  `memory.limit(size=25000)`
+Increase the amount of memory that can be allocated to the program. The amount of memory you want to increase the allocation to is up to you, though the authors recommend setting a large limit such as 50gb to avoid this error. This will not impact how R operates outside of the current environment. The following commands are given with the assumption the user wants to increase the memory to 50gb and can be adjusted to a lower size if desired. 
+- On Windows, run  `memory.limit(size=50000)`
 - On Mac, the solution is a bit more involved. Enter the following commands to create an R environment file (`.Renviron`) and add a maximum memory allocation argument (`R_MAX_VSIZE`): 
     1) Navigate to the `Terminal` tab in RStudio (next to the `Console` in the top left).
     2) Enter `touch .Renviron` to create the environment file.
     3) Enter `open .Renviron` to open the environment file in a terminal window.
-    4) Type `R_MAX_VSIZE= 25Gb` to set the memory allocation to 10gb and save the file.
+    4) Type `R_MAX_VSIZE= 50Gb` to set the memory allocation to 50gb and save the file.
     5) You can verify that the file was correctly saved by re-entering `open .Renviron` and checking for your changes. 
