@@ -29,7 +29,7 @@ archive/deaths_averted_plot_timeline/*
 !archive/deaths_averted_plot_timeline/20230506-175626-7cd72a58/
 !archive/deaths_averted_plot_timeline/20230506-175801-2bed9408/
 archive/generate_counterfactuals/*
-!archive/generate_counterfactuals/20230506-172630-1224e834/
+!archive/generate_counterfactuals/20230511-153316-514f07ec/
 archive/generate_production_counterfactual/*
 !archive/generate_production_counterfactual/20230506-162717-365a7d49/
 archive/generate_vaccine_counterfactual/*
@@ -43,7 +43,8 @@ archive/input_sequencing/*
 archive/input_vaccinations/*
 !archive/input_vaccinations/20230505-171527-b75eedaf/
 archive/lmic_reports_rt_optimise/*
-!archive/lmic_reports_rt_optimise/20230505-193412-ccc99dfc/
+!archive/lmic_reports_rt_optimise/20230509-161148-4da9ac3a/
+!archive/lmic_reports_rt_optimise/20230509-181145-94dceefd/
 archive/parameters_vaccines/*
 !archive/parameters_vaccines/20230505-171154-38bf3c7e/
 archive/preprint/*
