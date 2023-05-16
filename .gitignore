@@ -25,15 +25,17 @@ archive/.orderly_archive_version
 figure/report_files/
 
 archive/deaths_averted_plot_timeline/*
-!archive/deaths_averted_plot_timeline/20230506-175432-d06b1040/
-!archive/deaths_averted_plot_timeline/20230506-175626-7cd72a58/
-!archive/deaths_averted_plot_timeline/20230506-175801-2bed9408/
+!archive/deaths_averted_plot_timeline/20230515-173339-4a1a13e7/
+!archive/deaths_averted_plot_timeline/20230515-173520-3845e5ff/
+!archive/deaths_averted_plot_timeline/20230515-173650-3718c891/
 archive/generate_counterfactuals/*
-!archive/generate_counterfactuals/20230511-153316-514f07ec/
+!archive/generate_counterfactuals/20230515-160413-1c829c3d/
+!archive/generate_counterfactuals/20230515-163933-c157b869/
+!archive/generate_counterfactuals/20230515-170702-6987af72/
 archive/generate_production_counterfactual/*
-!archive/generate_production_counterfactual/20230506-162717-365a7d49/
+!archive/generate_production_counterfactual/20230515-160403-d169e8f6/
 archive/generate_vaccine_counterfactual/*
-!archive/generate_vaccine_counterfactual/20230506-162717-d95884e3/
+!archive/generate_vaccine_counterfactual/20230515-160408-958fb8fd/
 archive/input_excess_mortality/*
 !archive/input_excess_mortality/20230505-171239-48a6d9dd/
 archive/input_jhu/*
